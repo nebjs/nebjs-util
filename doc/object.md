@@ -87,7 +87,7 @@ This method can copy one object to another object in depth. You can specify that
 - @param from {Object} source
 - @param option {Object}
   - omit {String|Array|Function} : The properties to be deleted will no longer trigger the subsequent filters
-  - filter {Function} Filter: {Function(key, SRC, target)}, filter out unqualified attributes (lowest priority), and this of the filter points to the source object src
+  - filter {Function} Filter: {Function(key, src, target)}, filter out unqualified attributes (lowest priority), and this of the filter points to the source object src
     - The return value of false is filtered out..
     - When the return value is non-false, the data is not filtered and the return value is a non-null string, the return value is referred to as the [target object property name] (rename copy).
   - mergeObject {Boolean} Merge objects, the default is true
@@ -101,7 +101,7 @@ This method can copy one object to another object in depth. You can specify that
 - @param option {Object}
   - pick {String|Object|Array} Attributes to be copied, other attributes do not trigger subsequent filters
     - When Object: {srcAttrName: 'toAttrName',...} [source object property name] the value corresponding to [target object property name] (name change copy)
-  - filter {Function} Filter: {Function(key, SRC, target)}, filter out unqualified attributes (lowest priority), and this of the filter points to the source object src
+  - filter {Function} Filter: {Function(key, src, target)}, filter out unqualified attributes (lowest priority), and this of the filter points to the source object src
     - The return value of false is filtered out..
     - When the return value is non-false, the data is not filtered and the return value is a non-null string, the return value is referred to as the [target object property name] (rename copy).
   - mergeObject {Boolean} Merge objects, the default is true
