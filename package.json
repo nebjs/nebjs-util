@@ -1,6 +1,6 @@
 {
   "name": "nebjs-util",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "description": "A Javascript Common Development Library For NebJS/Web/NodeJS",
   "main": "build/dev/nebjs-util.js",
   "scripts": {
@@ -26,5 +26,9 @@
     "babel-preset-stage-0": "^6.24.1",
     "mochawesome": "^3.0.2",
     "chai": "^4.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nebjs/nebjs-util"
   }
 }
