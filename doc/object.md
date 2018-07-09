@@ -2,11 +2,11 @@
 The util.object has methods for manipulating object type objects, using examples
 
 ## Contents
-- [demo](#demo)
-- [api](#api)
+- [Demo](#Demo)
+- [Api](#Api)
 
 <span id="demo"></span>
-### object demo
+### Demo
 ```javascript
 const util = require('nebjs-util');
 // Clears all properties of the object
@@ -75,7 +75,7 @@ util.object.pick({a: {b: "c"}, b: ["a"]}, {a: {d: "e"}, b: ["b"]}, {pick: ["a", 
 ```
 
 <span id="api"></span>
-### object api
+### Api
 #### util.object.clear(obj)
 This method clears all the properties of the object
 - @param obj {Object} clears target

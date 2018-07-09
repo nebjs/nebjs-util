@@ -2,11 +2,11 @@
 The util.string has methods to manipulate String strings, using examples
 
 ## Contents
-- [demo](#demo)
-- [api](#api)
+- [Demo](#Demo)
+- [Api](#Api)
 
-<span id="demo"></span>
-### string demo
+<span id="Demo"></span>
+### Demo
 ```javascript
 const util = require('nebjs-util');
 // Empty space at both ends of the string
@@ -25,8 +25,8 @@ util.string.escape("\\n\\t\\r\\f");
 // console.log: 'ntr\u000f'
 ```
 
-<span id="api"></span>
-### string api
+<span id="Api"></span>
+### Api
 #### util.string.trim(str)
 This method intercepts whitespace characters at both ends of a string
 - @param str {String} target string

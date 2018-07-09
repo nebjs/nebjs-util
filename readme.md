@@ -33,14 +33,14 @@ util.array.uniquePush(['a'], 'a', 'b', 'c');
 
 ## Object && Namespace
 ### util.object
-The util.object has methods to manipulating Object type objects, using examples
+The util.object has methods to manipulating Object type objects
 - [object  => document](/doc/object.md)
 
 ### util.string
-The util.string has methods to manipulate String strings, using examples
+The util.string has methods to manipulate String strings
 - [string  => document](/doc/string.md)
 
 ### util.array
-The util.array has array to manipulate Array objects, using example
+The util.array has array to manipulate Array objects
 - [array  => document](/doc/array.md)
 
