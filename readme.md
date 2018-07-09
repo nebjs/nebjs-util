@@ -1,6 +1,12 @@
+<img width="160px" src="https://raw.githubusercontent.com/nebjs/nebjs-util-web/master/images/logo.png">
+
 # nebjs-util: A Javascript Common Development Library
 
 A Javascript Common Development Library For NebJS/Web/NodeJS
+
+[![npm](https://img.shields.io/npm/v/nebjs-util.svg)](https://www.npmjs.com/package/nebjs-util)
+[![npm downloads](https://img.shields.io/npm/dm/nebjs-util.svg)](https://www.npmjs.com/package/nebjs-util)
+[![npm downloads](https://img.shields.io/npm/l/nebjs-util.svg)](https://www.npmjs.com/package/nebjs-util)
 
 ## Install
 
