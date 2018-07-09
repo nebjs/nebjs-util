@@ -25,7 +25,7 @@ util.array.uniquePush(['a'], 'a', 'b', 'c');
 
 <span id="object"></span>
 
-##Object && Namespace
+## Object && Namespace
 ### util.object
 The util.object has methods to manipulating Object type objects, using examples
 - [object  => document](/doc/object.md)

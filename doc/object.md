@@ -1,15 +1,12 @@
+# object
+The util.object has methods for manipulating object type objects, using examples
 
 ## Contents
-
 - [demo](#demo)
 - [api](#api)
 
-##object
-The util.object has methods for manipulating object type objects, using examples
-
 <span id="demo"></span>
-###object demo
-
+### object demo
 ```javascript
 const util = require('nebjs-util');
 // Clears all properties of the object
@@ -78,14 +75,13 @@ util.object.pick({a: {b: "c"}, b: ["a"]}, {a: {d: "e"}, b: ["b"]}, {pick: ["a", 
 ```
 
 <span id="api"></span>
-###object api
-
-####util.object.clear(obj)
+### object api
+#### util.object.clear(obj)
 This method clears all the properties of the object
 - @param obj {Object} clears target
 - @return clears target like {}
 
-####util.object.copy(to, from, option = {})
+#### util.object.copy(to, from, option = {})
 This method can copy one object to another object in depth. You can specify that you only copy properties that satisfy the condition, and you can specify an alias for the attribute
 - @param to {Object} target
 - @param from {Object} source
@@ -98,7 +94,7 @@ This method can copy one object to another object in depth. You can specify that
   - mergeArray {Boolean} Merge arrays, the default is true
 - @return target object
 
-####util.object.pick(to, from, option = {})
+#### util.object.pick(to, from, option = {})
 This method can copy one object to another object in depth. You can specify that you only copy properties that satisfy the condition, and you can specify an alias for the attribute
 - @param to {Object} target
 - @param from {Object} source
