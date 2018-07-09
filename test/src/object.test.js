@@ -63,7 +63,7 @@ describe('util.object 【对象操作】测试', function () {
   });
   describe('util.object.pick 【选择单拷贝对象】测试', function () {
     it('无操作对象：pick({}, {a: 123, b: 456}) 的串行化结果等于{}', function () {
-      JSON.stringify(util.object.pick({}, {a: 123, b: 456}, ['a'])).should.equal('{}');
+      JSON.stringify(util.object.pick({}, {a: 123, b: 456})).should.equal('{}');
     });
     it('选择至对象：pick({a: 123, b: 456}, {c: 789, d: "abc"}, {pick: ["c"]}}) 的串行化结果等于{"a":123,"b":456,"c":789}', function () {
       JSON.stringify(util.object.pick({a: 123, b: 456}, {c: 789, d: "abc"}, {pick: ["c"]})).should.equal('{"a":123,"b":456,"c":789}');

@@ -4,11 +4,12 @@
   "description": "A Javascript Common Development Library For NebJS/Web/NodeJS",
   "main": "build/dev/nebjs-util.js",
   "scripts": {
+    "devtest": "node test/dev/test.js",
     "test": "node_modules/.bin/mocha",
     "dev": "node_modules/.bin/webpack --config webpack/dev.config.js"
   },
   "keywords": [
-    "nebjs util NebJS Web NodeJS"
+    "NebJS Web NodeJS nebjs-util"
   ],
   "author": "nebjs",
   "license": "MIT",

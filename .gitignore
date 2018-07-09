@@ -3,3 +3,4 @@ node_modules
 package-lock.json
 test/report
 .npmignore
+test/dev
