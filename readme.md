@@ -20,7 +20,7 @@ const util = require('nebjs-util');
 util.object.clear({a: 123, b: 456});
 util.object.copy({}, {a: 123, b: 456});
 util.string.trim('  abc  ');
-util.array.uniquePush(['a'], 'a', 'b', 'c');
+util.array.copy(['a'], 'a');
 ```
 
 ## Contents && Document

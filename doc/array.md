@@ -7,7 +7,7 @@ The util.array has array to manipulate Array objects, using example
 
 <span id="Demo"></span>
 ### Demo
-```
+```javascript
 const util = require('nebjs-util');
 // copy an element/array into an array
 util.array.copy(['a'], 'a', {unique: true});
