@@ -1,4 +1,4 @@
-test/src/array.test.js
+test/src
 ###--compilers js:babel-core/register
 --require babel-core/register
 --recursive
