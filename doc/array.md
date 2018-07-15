@@ -29,9 +29,12 @@ This method can be used to copy an element/array into an array
 - @param array {Array} target array
 - @param element {*} element|elements
 - @param option {Object}
-  - index {Number}： Non-negative integer that specifies the location of the insert, which is at the end when not specified and at 0
-  - multi {Boolean}：Batch copy, false by default, and when true, an element is an array of multiple elements to import
-  - unique {Boolean}：Uniqueness constraint, default false, when true, existing elements will not be copied
+  - deep {Boolean} Deep copy, default false
+    The number of levels of deep copy is close to infinity
+    Note: when a deep copy is used, there must be no circular references in the deep copy object, otherwise you will be stuck with an infinite downward copy until the resource is exhausted
+  - index {Number} Non-negative integer that specifies the location of the insert, which is at the end when not specified and at 0
+  - multi {Boolean} Batch copy, false by default, and when true, an element is an array of multiple elements to import
+  - unique {Boolean} Uniqueness constraint, default false, when true, existing elements will not be copied
   - filter {Function} filter：Function(array, elements, element, index)，Filter out unqualified elements (priority below deep configuration), and this of the filter points to the current source element
     - The return value of false or other non-true objects means that the corresponding element is filtered out
     - When the return value is true, it means that the corresponding element is inserted directly

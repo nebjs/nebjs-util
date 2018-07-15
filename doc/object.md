@@ -86,6 +86,9 @@ This method can copy one object to another object in depth. You can specify that
 - @param to {Object} target
 - @param from {Object} source
 - @param option {Object}
+  - deep {Boolean} Deep copy, default false
+    The number of levels of deep copy is close to infinity
+    Note: when a deep copy is used, there must be no circular references in the deep copy object, otherwise you will be stuck with an infinite downward copy until the resource is exhausted
   - omit {String|Array|Function} : The properties to be deleted will no longer trigger the subsequent filters
   - filter {Function} Filter: {Function(key, src, target)}, filter out unqualified attributes (lowest priority), and this of the filter points to the source object src
     - The return value of false is filtered out..
@@ -99,6 +102,9 @@ This method can copy one object to another object in depth. You can specify that
 - @param to {Object} target
 - @param from {Object} source
 - @param option {Object}
+  - deep {Boolean} Deep copy, default false
+    The number of levels of deep copy is close to infinity
+    Note: when a deep copy is used, there must be no circular references in the deep copy object, otherwise you will be stuck with an infinite downward copy until the resource is exhausted
   - pick {String|Object|Array} Attributes to be copied, other attributes do not trigger subsequent filters
     - When Object: {srcAttrName: 'toAttrName',...} [source object property name] the value corresponding to [target object property name] (name change copy)
   - filter {Function} Filter: {Function(key, src, target)}, filter out unqualified attributes (lowest priority), and this of the filter points to the source object src

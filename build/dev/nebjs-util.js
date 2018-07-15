@@ -109,9 +109,11 @@ const { cloneValue } = __webpack_require__(/*! ../common */ "./lib/common.js");
  * @param array {Array} 目标
  * @param element {*|Array} 源对象
  * @param option {Object} 配置
- * index {Number}： 非负整数，指定插入的位置，未指定时在最后，为0时为首
- * multi {Boolean}：批量复制，默认为false，当为true时，element为要导入的多个元素组成的数组
- * unique {Boolean}：唯一性限制，默认为false，当为true时，已经存在的元素不会被拷贝
+ * deep {Boolean} 深拷贝，默认false
+ * 深拷贝的层级数接近无限，注意：当采用deep进行深拷贝时，深拷贝对象中不得出现互相循环引用，否则将陷于无穷向下拷贝直到资源耗尽
+ * index {Number} 非负整数，指定插入的位置，未指定时在最后，为0时为首
+ * multi {Boolean} 批量复制，默认为false，当为true时，element为要导入的多个元素组成的数组
+ * unique {Boolean} 唯一性限制，默认为false，当为true时，已经存在的元素不会被拷贝
  * filter {Function} 过滤器：Function(array, elements, element, index)，过滤掉不合条件的元素（优先级低于deep配置），过滤器的this指向当前源element
  *    返回值是false或其他非真对象时代表过滤掉相应元素
  *    返回值是true时代表直接插入相应元素
@@ -158,9 +160,7 @@ const copy = function (array, element, option = {}) {
       } else {
         val = e;
       }
-      if (deep) {
-        val = cloneValue(val);
-      }
+      if (deep) val = cloneValue(val);
       // 压入
       if (index !== undefined) {
         array.splice(index + i, 0, val);
@@ -189,7 +189,16 @@ const hasOwnProperty = Object.prototype.hasOwnProperty;
 const isObject = function (x) {
   return x !== null && x !== undefined && typeof x === 'object';
 };
-const assignKey = function (to, from, fromName, toName = fromName, mergeObject, mergeArray) {
+/**
+ * 深拷贝对象属性值
+ * @param to 目标对象或数组
+ * @param from 拷贝源对象或数组
+ * @param fromName 目标属性名或数组下标
+ * @param toName 拷贝源对象属性名或数组下标
+ * @param mergeObject 合并对象属性模式
+ * @param mergeArray 合并数组模式
+ */
+const deepAssign = function (to, from, fromName, toName = fromName, mergeObject, mergeArray) {
   // 创建一个栈，并在栈顶放入默认的要处理的所有参数（压栈）
   const stack = [{ to, from, fromName, toName }];
   while (stack.length > 0) {
@@ -223,6 +232,7 @@ const assignKey = function (to, from, fromName, toName = fromName, mergeObject, 
     }
   }
 };
+
 const cloneValue = function (val) {
   if (val && !(val instanceof Date) && !(val instanceof Error) && !(val instanceof RegExp)) {
     const tp = typeof val;
@@ -239,7 +249,7 @@ const cloneValue = function (val) {
       }
       for (const key in val) {
         if (hasOwnProperty.call(val, key)) {
-          assignKey(to, val, key, key);
+          deepAssign(to, val, key, key);
         }
       }
       val = to;
@@ -247,7 +257,7 @@ const cloneValue = function (val) {
   }
   return val;
 };
-const common = { hasOwnProperty, isObject, assignKey, cloneValue };
+const common = { hasOwnProperty, isObject, assignKey: deepAssign, cloneValue };
 module.exports = common;
 
 /***/ }),
@@ -295,7 +305,9 @@ const clear = function (obj) {
  * @param to {Object} 目标
  * @param from {Object} 源对象
  * @param option {Object} 配置
- * omit {String|Array|Function} : 要删除的属性，不会再触发后面的过滤器
+ * deep {Boolean} 深拷贝，默认false
+ * 深拷贝的层级数接近无限，注意：当采用deep进行深拷贝时，深拷贝对象中不得出现互相循环引用，否则将陷于无穷向下拷贝直到资源耗尽
+ * omit {String|Array|Function} 要删除的属性，不会再触发后面的过滤器
  * filter {Function} 过滤器：Function(key, src, target)，过滤掉不合条件的属性（优先级最低），过滤器的this指向源对象src
  *    返回值为false的被过滤掉..
  *    当返回值是非false时，不过滤数据，且返回值是非空字符串时，返回值作为【目标对象属性名称】（更名拷贝）
@@ -307,7 +319,7 @@ const copy = function (to, from, option = {}) {
   if (!to || to.constructor !== Object) throw new TypeError('to must be a object');
   if (!from || from.constructor !== Object) throw new TypeError('from must be a object');
   if (!option || option.constructor !== Object) throw new TypeError('option must be a object');
-  let { omit, filter, mergeObject = true, mergeArray = true } = option;
+  let { omit, deep = false, filter, mergeObject = true, mergeArray = true } = option;
   if (omit) {
     if (typeof omit === 'string') {
       omit = [omit];
@@ -324,34 +336,43 @@ const copy = function (to, from, option = {}) {
             const back = filter.call(from, key, from, to);
             if (back !== false) {
               name = back && typeof back === 'string' ? back : key;
-              assignKey(to, from, key, name, mergeObject, mergeArray);
+              if (deep) {
+                assignKey(to, from, key, name, mergeObject, mergeArray);
+              } else {
+                to[name] = from[key];
+              }
             }
           } else {
-            assignKey(to, from, key, key, mergeObject, mergeArray);
+            if (deep) {
+              assignKey(to, from, key, key, mergeObject, mergeArray);
+            } else {
+              to[key] = from[key];
+            }
           }
         }
       }
     }
-    return to;
-  } else {
-    if (to === from) {
-      return to;
-    }
-    from = Object(from);
-    for (const key in from) {
-      if (hasOwnProperty.call(from, key)) {
-        assignKey(to, from, key, key, mergeObject, mergeArray);
+  } else if (to !== from) {
+    if (deep) {
+      for (const key in from) {
+        if (hasOwnProperty.call(from, key)) {
+          assignKey(to, from, key, key, mergeObject, mergeArray);
+        }
       }
+    } else {
+      Object.assign(to, from);
     }
-    return to;
   }
+  return to;
 };
 /**
  * 深选择拷贝一个对象至另一个对象，必须指定要拷贝的属性，可指定拷贝条件，可为属性指定别名
  * @param to {Object} 目标
  * @param from {Object} 源对象
  * @param option {Object} 配置
- * pick {String|Object|Array}: 要拷贝的属性，其他属性不会触发后续的过滤器
+ * deep {Boolean} 深拷贝，默认false
+ * 深拷贝的层级数接近无限，注意：当采用deep进行深拷贝时，深拷贝对象中不得出现互相循环引用，否则将陷于无穷向下拷贝直到资源耗尽
+ * pick {String|Object|Array} 要拷贝的属性，其他属性不会触发后续的过滤器
  *    当为Object时：{srcAttrName: 'toAttrName', ...}  【源对象属性名称】对应的值作为【目标对象属性名称】（更名拷贝）
  * filter {Function} 过滤器：{Function(key, src, target)}，过滤掉不合条件的属性（优先级最低），过滤器的this指向源对象src
  *    返回值为false的被过滤掉..
@@ -364,7 +385,7 @@ const pick = function (to, from, option = {}) {
   if (!to || to.constructor !== Object) throw new TypeError('to must be a object');
   if (!from || from.constructor !== Object) throw new TypeError('from must be a object');
   if (!option || option.constructor !== Object) throw new TypeError('option must be a object');
-  let { pick, filter, mergeObject = true, mergeArray = true } = option;
+  let { pick, deep = false, filter, mergeObject = true, mergeArray = true } = option;
   if (to === from) {
     return to;
   }
@@ -383,10 +404,18 @@ const pick = function (to, from, option = {}) {
         const back = filter.call(from, key, from, to);
         if (back !== false) {
           name = back && typeof back === 'string' ? back : key;
-          assignKey(to, from, key, name, mergeObject, mergeArray);
+          if (deep) {
+            assignKey(to, from, key, name, mergeObject, mergeArray);
+          } else {
+            to[name] = from[key];
+          }
         }
       } else {
-        assignKey(to, from, key, key, mergeObject, mergeArray);
+        if (deep) {
+          assignKey(to, from, key, key, mergeObject, mergeArray);
+        } else {
+          to[key] = from[key];
+        }
       }
     }
   }
