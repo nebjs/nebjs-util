@@ -28,6 +28,8 @@ util.object.clear({a: 123, b: 456});
 util.object.copy({}, {a: 123, b: 456});
 util.string.trim('  abc  ');
 util.array.copy(['a'], 'a');
+util.common.clone({a: {b: "c"}, b: ["a"]});
+util.common.equal(['abc'], ['abc']);
 ```
 
 ## Contents && Document
@@ -35,6 +37,7 @@ util.array.copy(['a'], 'a');
 - [object](/doc/object.md)
 - [string](/doc/string.md)
 - [array](/doc/array.md)
+- [common](/doc/common.md)
 
 <span id="object"></span>
 
@@ -51,3 +54,6 @@ The util.string has methods to manipulate String strings
 The util.array has array to manipulate Array objects
 - [array  => document](/doc/array.md)
 
+### util.common
+The util.common has common methods
+- [common  => document](/doc/common.md)

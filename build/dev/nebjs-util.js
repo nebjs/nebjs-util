@@ -103,7 +103,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { cloneValue } = __webpack_require__(/*! ../common */ "./lib/common.js");
+const { clone } = __webpack_require__(/*! ../common */ "./lib/common.js");
 /**
  * 拷贝
  * @param array {Array} 目标
@@ -160,7 +160,7 @@ const copy = function (array, element, option = {}) {
       } else {
         val = e;
       }
-      if (deep) val = cloneValue(val);
+      if (deep) val = clone(val);
       // 压入
       if (index !== undefined) {
         array.splice(index + i, 0, val);
@@ -233,7 +233,7 @@ const deepAssign = function (to, from, fromName, toName = fromName, mergeObject,
   }
 };
 
-const cloneValue = function (val) {
+const clone = function (val) {
   if (val && !(val instanceof Date) && !(val instanceof Error) && !(val instanceof RegExp)) {
     const tp = typeof val;
     if (tp === 'string') {
@@ -257,7 +257,7 @@ const cloneValue = function (val) {
   }
   return val;
 };
-const common = { hasOwnProperty, isObject, assignKey: deepAssign, cloneValue };
+const common = { hasOwnProperty, isObject, deepAssign: deepAssign, clone };
 module.exports = common;
 
 /***/ }),
@@ -360,7 +360,11 @@ const copy = function (to, from, option = {}) {
         }
       }
     } else {
-      Object.assign(to, from);
+      for (const key in from) {
+        if (hasOwnProperty.call(from, key)) {
+          to[key] = from[key];
+        }
+      }
     }
   }
   return to;
