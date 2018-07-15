@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const util = require('../../lib/index');
+const util = require('../../build/dev/nebjs-util'); // const util = require('../../lib/index');
 describe('util.common 【common操作】测试', function () {
   describe('util.common.clone 【克隆/拷贝】测试', function () {
     it('克隆副本，克隆普通类型值，克隆的值与源对象值相等', function () {

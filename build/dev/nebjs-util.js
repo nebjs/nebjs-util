@@ -103,7 +103,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { clone } = __webpack_require__(/*! ../common */ "./lib/common.js");
+const { clone } = __webpack_require__(/*! ../common/index */ "./lib/common/index.js");
 /**
  * 拷贝
  * @param array {Array} 目标
@@ -178,16 +178,51 @@ module.exports = util;
 
 /***/ }),
 
-/***/ "./lib/common.js":
-/*!***********************!*\
-  !*** ./lib/common.js ***!
-  \***********************/
+/***/ "./lib/common/index.js":
+/*!*****************************!*\
+  !*** ./lib/common/index.js ***!
+  \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-const hasOwnProperty = Object.prototype.hasOwnProperty;
-const isObject = function (x) {
-  return x !== null && x !== undefined && typeof x === 'object';
+/**
+ * 对比两个对象是否相等
+ * @param x
+ * @param y
+ * @returns {Boolean}
+ */
+const equal = function (x, y) {
+  // 创建一个栈，并在栈顶放入默认的要处理的所有参数（压栈）
+  if (arguments.length < 2) throw new TypeError('this method need two argument');
+  const stack = [{ x, y }];
+  while (stack.length > 0) {
+    const { x, y } = stack.pop();
+    if (isNaN(x) && isNaN(y) && typeof x === 'number' && typeof y === 'number') return true; // 都是NaN时
+    if (x === y) return true; // 值相等或引用相等
+    const tpx = typeof x,
+          tpy = typeof y;
+    if (tpx !== tpy || x.constructor !== y.constructor) return false; // 基础或引用类型不同
+    if (x instanceof Date && y instanceof Date || x instanceof RegExp && y instanceof RegExp) return x.toString() === y.toString();
+    if (!(x instanceof Object && y instanceof Object)) return false;
+    if (Array.isArray(x)) {
+      if (x.length !== y.length) return false;
+      for (const p in y) {
+        stack.push({ x: x[p], y: y[p] });
+      }
+    } else {
+      if (x.isPrototypeOf(y) || y.isPrototypeOf(x)) return false;
+      for (const p in y) {
+        const h = y.hasOwnProperty(p);
+        if (h !== x.hasOwnProperty(p)) return false;
+        if (h) {
+          stack.push({ x: x[p], y: y[p] });
+        }
+      }
+      for (const p in x) {
+        if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) return false;
+      }
+    }
+  }
 };
 /**
  * 深拷贝对象属性值
@@ -208,56 +243,54 @@ const deepAssign = function (to, from, fromName, toName = fromName, mergeObject,
           fromElem = from[fromName];
     let toElem = to[toName];
     if (fromElem !== toElem) {
-      if (!isObject(fromElem) /*|| !hasOwnProperty.call(from, fromName)*/) {
-          to[toName] = fromElem;
-        } else if (Array.isArray(fromElem)) {
+      if (!(fromElem && typeof fromElem === 'object')) {
+        to[toName] = fromElem;
+      } else if (Array.isArray(fromElem)) {
         const len = fromElem.length;
-        if (!mergeArray || !Array.isArray(toElem)) {
-          toElem = to[toName] = [];
-        }
+        if (!mergeArray || !Array.isArray(toElem)) toElem = to[toName] = [];
         const toLen = toElem.length;
         for (let i = len - 1; i >= 0; --i) {
           stack.push({ to: toElem, from: fromElem, fromName: i, toName: i + toLen });
         }
       } else {
-        if (!mergeObject || !isObject(toElem)) {
-          toElem = to[toName] = {};
-        }
+        if (!mergeObject || !(toElem && typeof toElem === 'object' && !Array.isArray(toElem))) toElem = to[toName] = {};
         for (const name in fromElem) {
-          if (hasOwnProperty.call(fromElem, name)) {
-            stack.push({ to: toElem, from: fromElem, fromName: name, toName: name });
-          }
+          if (fromElem.hasOwnProperty(name)) stack.push({ to: toElem, from: fromElem, fromName: name, toName: name });
         }
       }
     }
   }
 };
-
-const clone = function (val) {
-  if (val && !(val instanceof Date) && !(val instanceof Error) && !(val instanceof RegExp)) {
-    const tp = typeof val;
+/**
+ * 克隆/深拷贝对象
+ * @param src
+ * @returns {*} 被拷贝数据的副本
+ */
+const clone = function (src) {
+  if (src && !(src instanceof Date) && !(src instanceof Error) && !(src instanceof RegExp)) {
+    const tp = typeof src;
     if (tp === 'string') {
-      val = val.slice();
+      src = src.slice();
     } else if (tp !== 'function' && tp !== 'boolean' && tp !== 'number' && tp !== 'symbol') {
       let to;
-      if (Array.isArray(val)) {
+      if (Array.isArray(src)) {
         to = [];
-      } else if (val.constructor === Object) {
+      } else if (src.constructor === Object) {
         to = {};
       } else {
-        to = new val.constructor();
+        to = new src.constructor();
       }
-      for (const key in val) {
-        if (hasOwnProperty.call(val, key)) {
-          deepAssign(to, val, key, key);
+      for (const key in src) {
+        if (src.hasOwnProperty(key)) {
+          deepAssign(to, src, key, key);
         }
       }
-      val = to;
+      src = to;
     }
   }
-  return val;
+  return src;
 };
-const common = { hasOwnProperty, isObject, deepAssign: deepAssign, clone };
+const common = { deepAssign, clone, equal };
 module.exports = common;
 
 /***/ }),
@@ -269,7 +302,7 @@ module.exports = common;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const common = __webpack_require__(/*! ./common */ "./lib/common.js");
+const common = __webpack_require__(/*! ./common/index */ "./lib/common/index.js");
 const object = __webpack_require__(/*! ./object/index */ "./lib/object/index.js");
 const string = __webpack_require__(/*! ./string/index */ "./lib/string/index.js");
 const array = __webpack_require__(/*! ./array/index */ "./lib/array/index.js");
@@ -285,7 +318,7 @@ module.exports = util;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { hasOwnProperty, assignKey } = __webpack_require__(/*! ../common */ "./lib/common.js");
+const { deepAssign } = __webpack_require__(/*! ../common/index */ "./lib/common/index.js");
 /**
  * 清空对象
  * @param obj
@@ -294,7 +327,7 @@ const clear = function (obj) {
   if (!obj || obj.constructor !== Object) throw new TypeError('obj must be a object');
   obj = Object(obj);
   for (const key in obj) {
-    if (hasOwnProperty.call(obj, key)) {
+    if (obj.hasOwnProperty(key)) {
       delete obj[key];
     }
   }
@@ -329,7 +362,7 @@ const copy = function (to, from, option = {}) {
   if (filter && typeof filter !== 'function') throw new TypeError('option\'s filter must be a function');
   if (omit || filter) {
     for (const key in from) {
-      if (hasOwnProperty.call(from, key)) {
+      if (from.hasOwnProperty(key)) {
         if (!omit || omit.indexOf(key) === -1) {
           if (filter) {
             let name = null;
@@ -337,14 +370,14 @@ const copy = function (to, from, option = {}) {
             if (back !== false) {
               name = back && typeof back === 'string' ? back : key;
               if (deep) {
-                assignKey(to, from, key, name, mergeObject, mergeArray);
+                deepAssign(to, from, key, name, mergeObject, mergeArray);
               } else {
                 to[name] = from[key];
               }
             }
           } else {
             if (deep) {
-              assignKey(to, from, key, key, mergeObject, mergeArray);
+              deepAssign(to, from, key, key, mergeObject, mergeArray);
             } else {
               to[key] = from[key];
             }
@@ -355,13 +388,13 @@ const copy = function (to, from, option = {}) {
   } else if (to !== from) {
     if (deep) {
       for (const key in from) {
-        if (hasOwnProperty.call(from, key)) {
-          assignKey(to, from, key, key, mergeObject, mergeArray);
+        if (from.hasOwnProperty(key)) {
+          deepAssign(to, from, key, key, mergeObject, mergeArray);
         }
       }
     } else {
       for (const key in from) {
-        if (hasOwnProperty.call(from, key)) {
+        if (from.hasOwnProperty(key)) {
           to[key] = from[key];
         }
       }
@@ -402,21 +435,21 @@ const pick = function (to, from, option = {}) {
   if (!pick) return to;
   if (filter && typeof filter !== 'function') throw new TypeError('option\'s filter must be a function');
   for (const key of pick) {
-    if (hasOwnProperty.call(from, key)) {
+    if (from.hasOwnProperty(key)) {
       if (filter) {
         let name = null;
         const back = filter.call(from, key, from, to);
         if (back !== false) {
           name = back && typeof back === 'string' ? back : key;
           if (deep) {
-            assignKey(to, from, key, name, mergeObject, mergeArray);
+            deepAssign(to, from, key, name, mergeObject, mergeArray);
           } else {
             to[name] = from[key];
           }
         }
       } else {
         if (deep) {
-          assignKey(to, from, key, key, mergeObject, mergeArray);
+          deepAssign(to, from, key, key, mergeObject, mergeArray);
         } else {
           to[key] = from[key];
         }

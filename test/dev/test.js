@@ -1,4 +1,4 @@
-const util = require('../../lib/index');
+const util = require('../../build/dev/nebjs-util'); // const util = require('../../lib/index');
 
 /*console.log(util.array.copy(['a'], 'a', {unique: true}));
 console.log(util.array.copy(['a'], ['a', 'b', 'c'], {unique: true, multi: true}));

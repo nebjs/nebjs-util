@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const util = require('../../lib/index');
+const util = require('../../build/dev/nebjs-util'); // const util = require('../../lib/index');
 describe('util.string 【字符串操作】测试', function () {
   describe('util.string.trim 清空两端空格测试', function () {
     it('trim两端：trim("  abc  ") 的等于abc', function () {

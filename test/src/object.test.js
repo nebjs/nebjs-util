@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const util = require('../../lib/index');
+const util = require('../../build/dev/nebjs-util'); // const util = require('../../lib/index');
 describe('util.object 【对象操作】测试', function () {
   describe('util.object.clear 【清空对象属性】测试', function () {
     it('clear对象：clear({a: 123, b: 456}) 的串行化结果等于{}', function () {

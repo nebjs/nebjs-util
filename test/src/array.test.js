@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const util = require('../../lib/index');
+const util = require('../../build/dev/nebjs-util'); // const util = require('../../lib/index');
 describe('util.array 【数组操作】测试', function () {
   describe('util.array.copy 【数组拷贝】测试', function () {
     describe('单多插入：指定插入的元素类型', function () {
