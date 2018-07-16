@@ -54,4 +54,29 @@ describe('util.array 【数组操作】测试', function () {
       });
     });
   });
+  describe('util.array.findItem 【数组项查找】测试', function () {
+    it('无结果：findItem(["a", "b", "c"], "d") === -1', function () {
+      expect(util.array.findItem(['a', 'b', 'd'], 'c')).to.equal(-1);
+    });
+    it('有结果：findItem(["a", "b", "c"], "c") === 2', function () {
+      expect(util.array.findItem(['a', 'b', 'c'], 'c')).to.equal(2);
+    });
+    it('有结果：findItem(["a", "b", {"a": "b", "b": "c"}], {"b": "c", "a": "b"}) === 2', function () {
+      expect(util.array.findItem(['a', 'b', {'a': 'b', 'b': 'c'}], {'b': 'c', 'a': 'b'})).to.equal(2);
+    });
+  });
+  describe('util.array.findItem 【数组无重复项】测试', function () {
+    it('有重复项：uniqueItem(["a", "b", "c", "c"]) === false', function () {
+      expect(util.array.uniqueItem(['a', 'b', 'c', 'c'])).to.equal(false);
+    });
+    it('无重复项：uniqueItem(["a", "b", "c", "d"]) === true', function () {
+      expect(util.array.uniqueItem(['a', 'b', 'c', 'd'])).to.equal(true);
+    });
+    it('有重复项：uniqueItem(["a", "b", "c", {}, {}]) === false', function () {
+      expect(util.array.uniqueItem(['a', 'b', 'c', {}, {}])).to.equal(false);
+    });
+    it('有重复项：uniqueItem(["a", "b", "c", {"a": "b", "b": "c"}, {"b": "c", "a": "b"}]) === false', function () {
+      expect(util.array.uniqueItem(['a', 'b', 'c', {'a': 'b', 'b': 'c'}, {'b': 'c', 'a': 'b'}])).to.equal(false);
+    });
+  });
 });

@@ -23,6 +23,8 @@ describe('util.common 【common操作】测试', function () {
       expect(util.common.equal('abc', 'abc')).to.equal(true);
       expect(util.common.equal(['abc'], ['abc', 'ab'])).to.equal(false);
       expect(util.common.equal(['abc'], ['abc'])).to.equal(true);
+      expect(util.common.equal([], [])).to.equal(true);
+      expect(util.common.equal({}, {})).to.equal(true);
     });
     it('引用类型对象的值对比：{a: {b: "c"}, b: ["a"]} 值等于另一个 {a: {b: "c"}, b: ["a"]}', function () {
       const x = {a: {b: "c"}, b: ["a"]}, y = {a: {b: "c"}, b: ["a"]}, z = {a: {b: "c"}, b: ["a", "b"]};

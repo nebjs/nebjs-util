@@ -103,7 +103,64 @@ return /******/ (function(modules) { // webpackBootstrap
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { clone } = __webpack_require__(/*! ../common/index */ "./lib/common/index.js");
+const { clone, equal } = __webpack_require__(/*! ../common/index */ "./lib/common/index.js");
+/**
+ * 查找值相等的元素的索引位置
+ * @param array {Array} 在数组中查找
+ * @param element {*} 查找等值元素
+ * @param option
+ * {
+ *  equalValue: true 执行严格的值相等判断，会深度作值对比
+ * }
+ * @returns {number} 查找到的索引值，-1代表未找到
+ */
+const findItem = function (array, element, option = {}) {
+  if (!Array.isArray(array)) throw new TypeError('array must be a array');
+  if (option && option.constructor !== Object) throw new TypeError('option must be a object');
+  const { equalValue = true } = option;
+  if (equalValue) {
+    return array.findIndex(elem => {
+      return equal(elem, element);
+    });
+  } else {
+    return array.findIndex(elem => {
+      return elem === element;
+    });
+  }
+};
+/**
+ * 判断数组没有重复元素
+ * @param array
+ * @param option
+ * {
+ *  equalValue: true 执行严格的值相等判断，会深度作值对比
+ * }
+ * @returns {boolean}
+ */
+const uniqueItem = function (array, option = {}) {
+  if (!Array.isArray(array)) throw new TypeError('array must be a array');
+  if (option && option.constructor !== Object) throw new TypeError('option must be a object');
+  const { equalValue = true } = option,
+        arrLen = array.length;
+  if (equalValue) {
+    for (let i = 0; i < arrLen - 1; i++) {
+      for (let j = i + 1; j < arrLen; j++) {
+        if (equal(array[i], array[j])) {
+          return false;
+        }
+      }
+    }
+  } else {
+    for (let i = 0; i < arrLen - 1; i++) {
+      for (let j = i + 1; j < arrLen; j++) {
+        if (array[i] === array[j]) {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+};
 /**
  * 拷贝
  * @param array {Array} 目标
@@ -112,6 +169,7 @@ const { clone } = __webpack_require__(/*! ../common/index */ "./lib/common/index
  * deep {Boolean} 深拷贝，默认false
  * 深拷贝的层级数接近无限，注意：当采用deep进行深拷贝时，深拷贝对象中不得出现互相循环引用，否则将陷于无穷向下拷贝直到资源耗尽
  * index {Number} 非负整数，指定插入的位置，未指定时在最后，为0时为首
+ * uniqueValue {Boolean} 唯一性限制，默认为false，当为true时，已经存在的元素不会被拷贝（深度值相等）
  * multi {Boolean} 批量复制，默认为false，当为true时，element为要导入的多个元素组成的数组
  * unique {Boolean} 唯一性限制，默认为false，当为true时，已经存在的元素不会被拷贝
  * filter {Function} 过滤器：Function(array, elements, element, index)，过滤掉不合条件的元素（优先级低于deep配置），过滤器的this指向当前源element
@@ -123,7 +181,7 @@ const { clone } = __webpack_require__(/*! ../common/index */ "./lib/common/index
 const copy = function (array, element, option = {}) {
   if (!Array.isArray(array)) throw new TypeError('array must be a array');
   if (!option || option.constructor !== Object) throw new TypeError('option must be a object');
-  const { index, multi, unique = false, filter, deep = false } = option;
+  const { index, multi, unique = false, uniqueValue = false, filter, deep = false } = option;
   let es;
   if (index !== undefined && (typeof index !== 'number' || index < 0 || index % 1 !== 0)) throw new TypeError('option\'s index must be a non-negative integer');
   if (multi) {
@@ -133,12 +191,19 @@ const copy = function (array, element, option = {}) {
     es = [element];
   }
   if (unique !== true && unique !== false) throw new TypeError('option\'s unique must be a boolean');
+  if (uniqueValue !== true && uniqueValue !== false) throw new TypeError('option\'s uniqueValue must be a boolean');
   if (filter && typeof filter !== 'function') throw new TypeError('option\'s filter must be a function');
   if (deep !== true && deep !== false) throw new TypeError('option\'s deep must be a boolean');
   const len = es.length;
   if (len > 0) {
     let hasSame;
-    if (unique) {
+    if (uniqueValue) {
+      hasSame = arg => {
+        return array.findIndex(elem => {
+          return equal(elem, arg);
+        }) !== -1;
+      };
+    } else if (unique) {
       hasSame = arg => {
         return array.findIndex(elem => {
           return elem === arg;
@@ -172,7 +237,7 @@ const copy = function (array, element, option = {}) {
   return array;
 };
 const util = {
-  copy
+  copy, findItem, uniqueItem
 };
 module.exports = util;
 
@@ -192,15 +257,15 @@ module.exports = util;
  * @returns {Boolean}
  */
 const equal = function (x, y) {
-  // 创建一个栈，并在栈顶放入默认的要处理的所有参数（压栈）
   if (arguments.length < 2) throw new TypeError('this method need two argument');
+  // 创建一个栈，并在栈顶放入默认的要处理的所有参数（压栈）
   const stack = [{ x, y }];
   while (stack.length > 0) {
-    const { x, y } = stack.pop();
-    if (isNaN(x) && isNaN(y) && typeof x === 'number' && typeof y === 'number') return true; // 都是NaN时
-    if (x === y) return true; // 值相等或引用相等
-    const tpx = typeof x,
+    const { x, y } = stack.pop(),
+          tpx = typeof x,
           tpy = typeof y;
+    if (isNaN(x) && isNaN(y) && tpx === 'number' && tpy === 'number') return true; // 都是NaN时
+    if (x === y) return true; // 值相等或引用相等
     if (tpx !== tpy || x.constructor !== y.constructor) return false; // 基础或引用类型不同
     if (x instanceof Date && y instanceof Date || x instanceof RegExp && y instanceof RegExp) return x.toString() === y.toString();
     if (!(x instanceof Object && y instanceof Object)) return false;
@@ -223,6 +288,7 @@ const equal = function (x, y) {
       }
     }
   }
+  return true;
 };
 /**
  * 深拷贝对象属性值

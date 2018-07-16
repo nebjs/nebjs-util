@@ -28,6 +28,8 @@ util.object.clear({a: 123, b: 456});
 util.object.copy({}, {a: 123, b: 456});
 util.string.trim('  abc  ');
 util.array.copy(['a'], 'a');
+util.array.findItem(["a", "b", {"a": "b", "b": "c"}], {'b': 'c', 'a': 'b'});
+util.array.uniqueItem(['a', 'b', 'c', {'a': 'b', 'b': 'c'}, {'b': 'c', 'a': 'b'}]);
 util.common.clone({a: {b: "c"}, b: ["a"]});
 util.common.equal(['abc'], ['abc']);
 ```
