@@ -9,10 +9,11 @@ The util.common has common methods, using example
 ### Demo
 ```javascript
 const util = require('nebjs-util');
-// copy an element/common into an common
+// Clone
 util.common.clone({a: {b: "c"}, b: ["a"]});
 // console.log: { a: { b: 'c' }, b: [ 'a' ] }
 
+// Equivalent to verify
 util.common.equal(1, 2);
 // console.log: false
 util.common.equal(2, 2);
@@ -25,7 +26,6 @@ util.common.equal(['abc'], ['abc', 'abc']);
 // console.log: false
 util.common.equal(['abc'], ['abc']);
 // console.log: true
-
 const x = {a: {b: "c"}, b: ["a"]}, y = {a: {b: "c"}, b: ["a"]}, z = {a: {b: "c"}, b: ["a", "b"]};
 util.common.equal(x, y);
 // console.log: true

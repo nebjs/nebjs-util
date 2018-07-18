@@ -25,3 +25,4 @@ console.log(util.common.equal(x, y));
 console.log(x === y);
 console.log(util.common.equal(x, z));
 
+console.log(util.date.fromFormatString('2018年07月18日 16:36:49', 'yyyy年MM月dd日 HH:mm:ss'));

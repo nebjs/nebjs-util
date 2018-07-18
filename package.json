@@ -1,6 +1,6 @@
 {
   "name": "nebjs-util",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "A Javascript Common Development Library For NebJS/Web/NodeJS",
   "homepage": "https://nebjs.github.io/nebjs-util-web",
   "main": "build/dev/nebjs-util.js",

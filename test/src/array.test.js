@@ -65,7 +65,7 @@ describe('util.array 【数组操作】测试', function () {
       expect(util.array.findItem(['a', 'b', {'a': 'b', 'b': 'c'}], {'b': 'c', 'a': 'b'})).to.equal(2);
     });
   });
-  describe('util.array.findItem 【数组无重复项】测试', function () {
+  describe('util.array.uniqueItem 【数组无重复项】测试', function () {
     it('有重复项：uniqueItem(["a", "b", "c", "c"]) === false', function () {
       expect(util.array.uniqueItem(['a', 'b', 'c', 'c'])).to.equal(false);
     });

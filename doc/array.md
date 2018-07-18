@@ -9,7 +9,7 @@ The util.array has array to manipulate Array objects, using example
 ### Demo
 ```javascript
 const util = require('nebjs-util');
-// copy an element/array into an array
+// Copy an element/array into an array
 util.array.copy(['a'], 'a', {unique: true});
 // console.log: [ 'a' ]
 util.array.copy(['a'], ['a', 'b', 'c'], {unique: true, multi: true});
@@ -20,8 +20,12 @@ util.array.copy(["a", "b", "c"], [0, 1, 2], {index: 0, multi: true});
 // console.log: [ 0, 1, 2, 'a', 'b', 'c' ]
 util.array.copy(['a'], ['a', 'b', 'c'], {unique: true, multi: true});
 // console.log: [ 'a', 'b', 'c' ]
+
+// Find equivalent elements
 util.array.findItem(["a", "b", {"a": "b", "b": "c"}], {"a": "b", "b": "c"});
 // console.log: 2
+
+// Determines that the array has no repeated equivalent elements
 util.array.uniqueItem(['a', 'b', 'c', {}, {}]);
 // console.log: false
 util.array.uniqueItem(['a', 'b', 'c', {'a': 'b', 'b': 'c'}, {'a': 'b', 'b': 'c'}]);

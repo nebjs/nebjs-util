@@ -30,6 +30,8 @@ util.string.trim('  abc  ');
 util.array.copy(['a'], 'a');
 util.array.findItem(["a", "b", {"a": "b", "b": "c"}], {'b': 'c', 'a': 'b'});
 util.array.uniqueItem(['a', 'b', 'c', {'a': 'b', 'b': 'c'}, {'b': 'c', 'a': 'b'}]);
+util.date.toFormatString(new Date(), "yyyy年MM月dd日");
+util.date.fromFormatString('2018年07月18日 16:36:49', 'yyyy年MM月dd日 HH:mm:ss');
 util.common.clone({a: {b: "c"}, b: ["a"]});
 util.common.equal(['abc'], ['abc']);
 ```
@@ -53,8 +55,12 @@ The util.string has methods to manipulate String strings
 - [string  => document](/doc/string.md)
 
 ### util.array
-The util.array has array to manipulate Array objects
+The util.array has methods to manipulate Array objects
 - [array  => document](/doc/array.md)
+
+### util.date
+The util.date has methods to manipulate Date objects
+- [date  => document](/doc/date.md)
 
 ### util.common
 The util.common has common methods
