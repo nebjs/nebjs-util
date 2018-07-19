@@ -1,6 +1,9 @@
 .idea
 .git
+.npmignore
+.gitignore
 node_modules
 package-lock.json
-test/report
-test/dev
+doc
+lib
+test
