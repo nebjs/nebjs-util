@@ -1,9 +1,13 @@
 .idea
 .git
-.npmignore
+.editorconfig
+.eslintignore
+.eslintrc
 .gitignore
+.npmignore
 node_modules
 package-lock.json
+webpack
 doc
 lib
 test
