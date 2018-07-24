@@ -267,7 +267,7 @@ const equal = function (x, y) {
     if (isNaN(x) && isNaN(y) && tpx === 'number' && tpy === 'number') return true; // 都是NaN时
     if (x === y) return true; // 值相等或引用相等
     if (tpx !== tpy || x.constructor !== y.constructor) return false; // 基础或引用类型不同
-    if (x instanceof Date && y instanceof Date || x instanceof RegExp && y instanceof RegExp) return x.toString() === y.toString();
+    if (x instanceof Date && y instanceof Date || x instanceof RegExp && y instanceof RegExp || x instanceof Error && y instanceof Error) return x.toString() === y.toString();
     if (!(x instanceof Object && y instanceof Object)) return false;
     if (Array.isArray(x)) {
       if (x.length !== y.length) return false;
@@ -318,8 +318,17 @@ const deepAssign = function (to, from, fromName, toName = fromName, mergeObject,
         for (let i = len - 1; i >= 0; --i) {
           stack.push({ to: toElem, from: fromElem, fromName: i, toName: i + toLen });
         }
+      } else if (fromElem.constructor === Date) {
+        to[toName] = new Date(fromElem.getTime());
+      } else if (fromElem.constructor === RegExp) {
+        to[toName] = new RegExp(fromElem.toString());
+      } else if (fromElem.constructor === Error) {
+        to[toName] = new Error(fromElem.toString());
       } else {
-        if (!mergeObject || !(toElem && typeof toElem === 'object' && !Array.isArray(toElem))) toElem = to[toName] = {};
+        if (!mergeObject || !toElem || toElem.constructor !== Object || !(typeof toElem === 'object' && !Array.isArray(toElem))) {
+          const ks = fromElem.constructor;
+          toElem = to[toName] = ks === Object ? {} : new ks();
+        }
         for (const name in fromElem) {
           if (fromElem.hasOwnProperty(name)) stack.push({ to: toElem, from: fromElem, fromName: name, toName: name });
         }
