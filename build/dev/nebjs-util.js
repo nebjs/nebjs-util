@@ -193,23 +193,23 @@ var uniqueItem = function uniqueItem(array) {
  *    返回值是{value: ???}时代表插入value对应的值，此方式可用于作特殊处理，比如实现复杂深度拷贝副本再插入等操作
  * @return []
  */
-var copy = function copy(array, element, option) {
-  option = option || {};
+var copy = function copy(array, element) {
+  var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
   if (!Array.isArray(array)) throw new TypeError('array must be a array');
   if (!option || option.constructor !== Object) throw new TypeError('option must be a object');
-  var _option = option,
-      index = _option.index,
-      multi = _option.multi,
-      _option$unique = _option.unique,
+  var index = option.index,
+      multi = option.multi,
+      _option$unique = option.unique,
       unique = _option$unique === undefined ? false : _option$unique,
-      _option$uniqueValue = _option.uniqueValue,
+      _option$uniqueValue = option.uniqueValue,
       uniqueValue = _option$uniqueValue === undefined ? false : _option$uniqueValue,
-      filter = _option.filter,
-      _option$deep = _option.deep,
+      filter = option.filter,
+      _option$deep = option.deep,
       deep = _option$deep === undefined ? false : _option$deep;
 
   var es = void 0;
-  if (index !== undefined && (typeof index !== 'number' || index < 0 || index % 1 !== 0)) throw new TypeError('option\'s index must be a non-negative integer');
+  if (index !== void 0 && (typeof index !== 'number' || index < 0 || index % 1 !== 0)) throw new TypeError('option\'s index must be a non-negative integer');
   if (multi) {
     if (!Array.isArray(element)) throw new TypeError('when option\'s multi is true, then elem must be a array');
     es = element;
@@ -253,7 +253,7 @@ var copy = function copy(array, element, option) {
       }
       if (deep) val = clone(val);
       // 压入
-      if (index !== undefined) {
+      if (index !== void 0) {
         array.splice(index + i, 0, val);
       } else {
         array.push(val);
@@ -580,7 +580,7 @@ var HashData = function () {
       if (!(hashName && typeof hashName === 'string' && hashName.length > 0)) throw new TypeError('hashName must be a non-empty string');
       if (!(dataName && typeof dataName === 'string' && dataName.length > 0)) throw new TypeError('dataName must be a non-empty string');
       var data = this.hash[hashName];
-      return data ? data.getData(dataName) : undefined;
+      return data ? data.getData(dataName) : void 0;
     }
 
     /**
@@ -595,7 +595,7 @@ var HashData = function () {
       if (!(hashName && typeof hashName === 'string' && hashName.length > 0)) throw new TypeError('hashName must be a non-empty string');
       if (!(index && typeof index === 'number' && index >= 0)) throw new TypeError('index must be a non-negative integer');
       var data = this.hash[hashName];
-      return data ? data.getDataByIndex(index) : undefined;
+      return data ? data.getDataByIndex(index) : void 0;
     }
   }]);
 
@@ -781,19 +781,19 @@ var clear = function clear(obj) {
  * mergeArray {Boolean} 合并数组 默认真
  * @return {*}
  */
-var copy = function copy(to, from, option) {
-  option = option || {};
+var copy = function copy(to, from) {
+  var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
   if (!to || to.constructor !== Object) throw new TypeError('to must be a object');
   if (!from || from.constructor !== Object) throw new TypeError('from must be a object');
   if (!option || option.constructor !== Object) throw new TypeError('option must be a object');
-  var _option = option,
-      omit = _option.omit,
-      _option$deep = _option.deep,
+  var omit = option.omit,
+      _option$deep = option.deep,
       deep = _option$deep === undefined ? false : _option$deep,
-      filter = _option.filter,
-      _option$mergeObject = _option.mergeObject,
+      filter = option.filter,
+      _option$mergeObject = option.mergeObject,
       mergeObject = _option$mergeObject === undefined ? true : _option$mergeObject,
-      _option$mergeArray = _option.mergeArray,
+      _option$mergeArray = option.mergeArray,
       mergeArray = _option$mergeArray === undefined ? true : _option$mergeArray;
 
   if (omit) {
