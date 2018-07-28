@@ -41,6 +41,7 @@ util.common.equal(['abc'], ['abc']);
 - [object](/doc/object.md)
 - [string](/doc/string.md)
 - [array](/doc/array.md)
+- [date](/doc/date.md)
 - [common](/doc/common.md)
 
 <span id="object"></span>

@@ -103,7 +103,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { clone, equal } = __webpack_require__(/*! ../common/index */ "./lib/common/index.js");
+"use strict";
+
+
+var _require = __webpack_require__(/*! ../common/index */ "./lib/common/index.js"),
+    clone = _require.clone,
+    equal = _require.equal;
 /**
  * 查找值相等的元素的索引位置
  * @param array {Array} 在数组中查找
@@ -114,16 +119,22 @@ const { clone, equal } = __webpack_require__(/*! ../common/index */ "./lib/commo
  * }
  * @returns {number} 查找到的索引值，-1代表未找到
  */
-const findItem = function (array, element, option = {}) {
+
+
+var findItem = function findItem(array, element) {
+  var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
   if (!Array.isArray(array)) throw new TypeError('array must be a array');
   if (option && option.constructor !== Object) throw new TypeError('option must be a object');
-  const { equalValue = true } = option;
+  var _option$equalValue = option.equalValue,
+      equalValue = _option$equalValue === undefined ? true : _option$equalValue;
+
   if (equalValue) {
-    return array.findIndex(elem => {
+    return array.findIndex(function (elem) {
       return equal(elem, element);
     });
   } else {
-    return array.findIndex(elem => {
+    return array.findIndex(function (elem) {
       return elem === element;
     });
   }
@@ -137,23 +148,27 @@ const findItem = function (array, element, option = {}) {
  * }
  * @returns {boolean}
  */
-const uniqueItem = function (array, option = {}) {
+var uniqueItem = function uniqueItem(array) {
+  var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
   if (!Array.isArray(array)) throw new TypeError('array must be a array');
   if (option && option.constructor !== Object) throw new TypeError('option must be a object');
-  const { equalValue = true } = option,
-        arrLen = array.length;
+  var _option$equalValue2 = option.equalValue,
+      equalValue = _option$equalValue2 === undefined ? true : _option$equalValue2,
+      arrLen = array.length;
+
   if (equalValue) {
-    for (let i = 0; i < arrLen - 1; i++) {
-      for (let j = i + 1; j < arrLen; j++) {
+    for (var i = 0; i < arrLen - 1; i++) {
+      for (var j = i + 1; j < arrLen; j++) {
         if (equal(array[i], array[j])) {
           return false;
         }
       }
     }
   } else {
-    for (let i = 0; i < arrLen - 1; i++) {
-      for (let j = i + 1; j < arrLen; j++) {
-        if (array[i] === array[j]) {
+    for (var _i = 0; _i < arrLen - 1; _i++) {
+      for (var _j = _i + 1; _j < arrLen; _j++) {
+        if (array[_i] === array[_j]) {
           return false;
         }
       }
@@ -178,11 +193,22 @@ const uniqueItem = function (array, option = {}) {
  *    返回值是{value: ???}时代表插入value对应的值，此方式可用于作特殊处理，比如实现复杂深度拷贝副本再插入等操作
  * @return []
  */
-const copy = function (array, element, option = {}) {
+var copy = function copy(array, element, option) {
+  option = option || {};
   if (!Array.isArray(array)) throw new TypeError('array must be a array');
   if (!option || option.constructor !== Object) throw new TypeError('option must be a object');
-  const { index, multi, unique = false, uniqueValue = false, filter, deep = false } = option;
-  let es;
+  var _option = option,
+      index = _option.index,
+      multi = _option.multi,
+      _option$unique = _option.unique,
+      unique = _option$unique === undefined ? false : _option$unique,
+      _option$uniqueValue = _option.uniqueValue,
+      uniqueValue = _option$uniqueValue === undefined ? false : _option$uniqueValue,
+      filter = _option.filter,
+      _option$deep = _option.deep,
+      deep = _option$deep === undefined ? false : _option$deep;
+
+  var es = void 0;
   if (index !== undefined && (typeof index !== 'number' || index < 0 || index % 1 !== 0)) throw new TypeError('option\'s index must be a non-negative integer');
   if (multi) {
     if (!Array.isArray(element)) throw new TypeError('when option\'s multi is true, then elem must be a array');
@@ -194,28 +220,28 @@ const copy = function (array, element, option = {}) {
   if (uniqueValue !== true && uniqueValue !== false) throw new TypeError('option\'s uniqueValue must be a boolean');
   if (filter && typeof filter !== 'function') throw new TypeError('option\'s filter must be a function');
   if (deep !== true && deep !== false) throw new TypeError('option\'s deep must be a boolean');
-  const len = es.length;
+  var len = es.length;
   if (len > 0) {
-    let hasSame;
+    var hasSame = void 0;
     if (uniqueValue) {
-      hasSame = arg => {
-        return array.findIndex(elem => {
+      hasSame = function hasSame(arg) {
+        return array.findIndex(function (elem) {
           return equal(elem, arg);
         }) !== -1;
       };
     } else if (unique) {
-      hasSame = arg => {
-        return array.findIndex(elem => {
+      hasSame = function hasSame(arg) {
+        return array.findIndex(function (elem) {
           return elem === arg;
         }) !== -1;
       };
     }
-    for (let i = 0; i < len; ++i) {
-      const e = es[i];
+    for (var i = 0; i < len; ++i) {
+      var e = es[i];
       if (hasSame && hasSame(e)) continue;
-      let val;
+      var val = void 0;
       if (filter) {
-        const back = filter.call(e, array, es, e, i);
+        var back = filter.call(e, array, es, e, i);
         if (!back) continue;
         if (back.constructor === Object) {
           val = back.value;
@@ -236,8 +262,8 @@ const copy = function (array, element, option = {}) {
   }
   return array;
 };
-const util = {
-  copy, findItem, uniqueItem
+var util = {
+  copy: copy, findItem: findItem, uniqueItem: uniqueItem
 };
 module.exports = util;
 
@@ -248,7 +274,12 @@ module.exports = util;
   !*** ./lib/common/index.js ***!
   \*****************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /**
  * 对比两个对象是否相等
@@ -256,35 +287,38 @@ module.exports = util;
  * @param y
  * @returns {Boolean}
  */
-const equal = function (x, y) {
+var equal = function equal(x, y) {
   if (arguments.length < 2) throw new TypeError('this method need two argument');
   // 创建一个栈，并在栈顶放入默认的要处理的所有参数（压栈）
-  const stack = [{ x, y }];
+  var stack = [{ x: x, y: y }];
   while (stack.length > 0) {
-    const { x, y } = stack.pop(),
-          tpx = typeof x,
-          tpy = typeof y;
-    if (isNaN(x) && isNaN(y) && tpx === 'number' && tpy === 'number') return true; // 都是NaN时
-    if (x === y) return true; // 值相等或引用相等
-    if (tpx !== tpy || x.constructor !== y.constructor) return false; // 基础或引用类型不同
-    if (x instanceof Date && y instanceof Date || x instanceof RegExp && y instanceof RegExp || x instanceof Error && y instanceof Error) return x.toString() === y.toString();
-    if (!(x instanceof Object && y instanceof Object)) return false;
-    if (Array.isArray(x)) {
-      if (x.length !== y.length) return false;
-      for (const p in y) {
-        stack.push({ x: x[p], y: y[p] });
+    var _stack$pop = stack.pop(),
+        _x = _stack$pop.x,
+        _y = _stack$pop.y,
+        tpx = typeof _x === 'undefined' ? 'undefined' : _typeof(_x),
+        tpy = typeof _y === 'undefined' ? 'undefined' : _typeof(_y);
+
+    if (isNaN(_x) && isNaN(_y) && tpx === 'number' && tpy === 'number') return true; // 都是NaN时
+    if (_x === _y) return true; // 值相等或引用相等
+    if (tpx !== tpy || _x.constructor !== _y.constructor) return false; // 基础或引用类型不同
+    if (_x instanceof Date && _y instanceof Date || _x instanceof RegExp && _y instanceof RegExp || _x instanceof Error && _y instanceof Error) return _x.toString() === _y.toString();
+    if (!(_x instanceof Object && _y instanceof Object)) return false;
+    if (Array.isArray(_x)) {
+      if (_x.length !== _y.length) return false;
+      for (var p in _y) {
+        stack.push({ x: _x[p], y: _y[p] });
       }
     } else {
-      if (x.isPrototypeOf(y) || y.isPrototypeOf(x)) return false;
-      for (const p in y) {
-        const h = y.hasOwnProperty(p);
-        if (h !== x.hasOwnProperty(p)) return false;
+      if (_x.isPrototypeOf(_y) || _y.isPrototypeOf(_x)) return false;
+      for (var _p in _y) {
+        var h = _y.hasOwnProperty(_p);
+        if (h !== _x.hasOwnProperty(_p)) return false;
         if (h) {
-          stack.push({ x: x[p], y: y[p] });
+          stack.push({ x: _x[_p], y: _y[_p] });
         }
       }
-      for (const p in x) {
-        if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) return false;
+      for (var _p2 in _x) {
+        if (_y.hasOwnProperty(_p2) !== _x.hasOwnProperty(_p2)) return false;
       }
     }
   }
@@ -299,42 +333,49 @@ const equal = function (x, y) {
  * @param mergeObject 合并对象属性模式
  * @param mergeArray 合并数组模式
  */
-const deepAssign = function (to, from, fromName, toName = fromName, mergeObject, mergeArray) {
+var deepAssign = function deepAssign(to, from, fromName) {
+  var toName = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : fromName;
+  var mergeObject = arguments[4];
+  var mergeArray = arguments[5];
+
   // 创建一个栈，并在栈顶放入默认的要处理的所有参数（压栈）
-  const stack = [{ to, from, fromName, toName }];
+  var stack = [{ to: to, from: from, fromName: fromName, toName: toName }];
   while (stack.length > 0) {
     // 当前操作栈（参数），从栈顶取出的参数
-    const arg = stack.pop(),
-          { to, from, fromName, toName } = arg,
-          fromElem = from[fromName];
-    let toElem = to[toName];
+    var arg = stack.pop(),
+        _to = arg.to,
+        _from = arg.from,
+        _fromName = arg.fromName,
+        _toName = arg.toName,
+        fromElem = _from[_fromName];
+    var toElem = _to[_toName];
     if (fromElem !== toElem) {
-      if (!(fromElem && typeof fromElem === 'object')) {
-        to[toName] = fromElem;
+      if (!(fromElem && (typeof fromElem === 'undefined' ? 'undefined' : _typeof(fromElem)) === 'object')) {
+        _to[_toName] = fromElem;
       } else if (Array.isArray(fromElem)) {
-        const len = fromElem.length;
-        if (!mergeArray || !Array.isArray(toElem)) toElem = to[toName] = [];
-        const toLen = toElem.length;
-        for (let i = len - 1; i >= 0; --i) {
+        var len = fromElem.length;
+        if (!mergeArray || !Array.isArray(toElem)) toElem = _to[_toName] = [];
+        var toLen = toElem.length;
+        for (var i = len - 1; i >= 0; --i) {
           stack.push({ to: toElem, from: fromElem, fromName: i, toName: i + toLen });
         }
       } else if (fromElem.constructor === Date) {
-        to[toName] = new Date(fromElem.getTime());
+        _to[_toName] = new Date(fromElem.getTime());
       } else if (fromElem.constructor === RegExp) {
-        let attr = '';
+        var attr = '';
         if (fromElem.global) attr += 'g';
         if (fromElem.ignoreCase) attr += 'i';
         if (fromElem.multiline) attr += 'm';
-        to[toName] = new RegExp(fromElem.source, attr);
-        to[toName].lastIndex = fromElem.lastIndex;
+        _to[_toName] = new RegExp(fromElem.source, attr);
+        _to[_toName].lastIndex = fromElem.lastIndex;
       } else if (fromElem.constructor === Error) {
-        to[toName] = new Error(fromElem.toString());
+        _to[_toName] = new Error(fromElem.toString());
       } else {
-        if (!mergeObject || !toElem || toElem.constructor !== Object || !(typeof toElem === 'object' && !Array.isArray(toElem))) {
-          const ks = fromElem.constructor;
-          toElem = to[toName] = ks === Object ? {} : new ks();
+        if (!mergeObject || !toElem || toElem.constructor !== Object || !((typeof toElem === 'undefined' ? 'undefined' : _typeof(toElem)) === 'object' && !Array.isArray(toElem))) {
+          var ks = fromElem.constructor;
+          toElem = _to[_toName] = ks === Object ? {} : new ks();
         }
-        for (const name in fromElem) {
+        for (var name in fromElem) {
           if (fromElem.hasOwnProperty(name)) stack.push({ to: toElem, from: fromElem, fromName: name, toName: name });
         }
       }
@@ -346,13 +387,13 @@ const deepAssign = function (to, from, fromName, toName = fromName, mergeObject,
  * @param src
  * @returns {*} 被拷贝数据的副本
  */
-const clone = function (src) {
+var clone = function clone(src) {
   if (src && !(src instanceof Date) && !(src instanceof Error) && !(src instanceof RegExp)) {
-    const tp = typeof src;
+    var tp = typeof src === 'undefined' ? 'undefined' : _typeof(src);
     if (tp === 'string') {
       src = src.slice();
     } else if (tp !== 'function' && tp !== 'boolean' && tp !== 'number' && tp !== 'symbol') {
-      let to;
+      var to = void 0;
       if (Array.isArray(src)) {
         to = [];
       } else if (src.constructor === Object) {
@@ -360,7 +401,7 @@ const clone = function (src) {
       } else {
         to = new src.constructor();
       }
-      for (const key in src) {
+      for (var key in src) {
         if (src.hasOwnProperty(key)) {
           deepAssign(to, src, key, key);
         }
@@ -370,8 +411,214 @@ const clone = function (src) {
   }
   return src;
 };
-const common = { deepAssign, clone, equal };
+var common = { deepAssign: deepAssign, clone: clone, equal: equal };
 module.exports = common;
+
+/***/ }),
+
+/***/ "./lib/data/Data.js":
+/*!**************************!*\
+  !*** ./lib/data/Data.js ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Data类
+ */
+var Data = function () {
+  function Data() {
+    _classCallCheck(this, Data);
+
+    this.info = {};
+    this.list = [];
+  }
+
+  /**
+   * 设置数据
+   * @param name
+   * @param value
+   */
+
+
+  _createClass(Data, [{
+    key: 'setData',
+    value: function setData(name, value) {
+      if (!(name && typeof name === 'string' && name.length > 0)) throw new TypeError('name must be a non-empty string');
+      var info = this.info,
+          list = this.list,
+          dt = { name: name, index: list.length, value: value };
+
+      info[name] = dt;
+      list.push(dt);
+      return dt;
+    }
+
+    /**
+     * 通过name获取数据
+     * @param name
+     */
+
+  }, {
+    key: 'getData',
+    value: function getData(name) {
+      if (!(name && typeof name === 'string' && name.length > 0)) throw new TypeError('name must be a non-empty string');
+      return this.info[name];
+    }
+
+    /**
+     * 通过index获取数据
+     * @param index
+     */
+
+  }, {
+    key: 'getDataByIndex',
+    value: function getDataByIndex(index) {
+      if (!(index && typeof index === 'number' && index >= 0)) throw new TypeError('index must be a non-negative integer');
+      return this.list[index];
+    }
+  }]);
+
+  return Data;
+}();
+
+module.exports = Data;
+
+/***/ }),
+
+/***/ "./lib/data/HashData.js":
+/*!******************************!*\
+  !*** ./lib/data/HashData.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LexData = __webpack_require__(/*! ./Data */ "./lib/data/Data.js");
+
+/**
+ * HashData类
+ */
+
+var HashData = function () {
+  function HashData() {
+    _classCallCheck(this, HashData);
+
+    this.hash = {};
+  }
+
+  /**
+   * 设置数据
+   * @param hashName
+   * @param data
+   */
+
+
+  _createClass(HashData, [{
+    key: 'setHashData',
+    value: function setHashData(hashName, data) {
+      if (!(hashName && typeof hashName === 'string' && hashName.length > 0)) throw new TypeError('hashName must be a non-empty string');
+      if (!(data && data instanceof LexData)) throw new TypeError('data must be LexData');
+      var hash = this.hash;
+
+      hash[hashName] = data;
+      return data;
+    }
+
+    /**
+     * 获取Data数据
+     * @param hashName
+     */
+
+  }, {
+    key: 'getHashData',
+    value: function getHashData(hashName) {
+      if (!(hashName && typeof hashName === 'string' && hashName.length > 0)) throw new TypeError('hashName must be a non-empty string');
+      return this.hash[hashName];
+    }
+
+    /**
+     * 通过name设置data数据
+     * @param hashName
+     * @param dataName
+     * @param dataValue
+     */
+
+  }, {
+    key: 'setData',
+    value: function setData(hashName, dataName, dataValue) {
+      if (!(hashName && typeof hashName === 'string' && hashName.length > 0)) throw new TypeError('hashName must be a non-empty string');
+      if (!(dataName && typeof dataName === 'string' && dataName.length > 0)) throw new TypeError('dataName must be a non-empty string');
+      var hash = this.hash;
+
+      var data = hash[hashName] || new LexData();
+      return data.setData(dataName, dataValue);
+    }
+
+    /**
+     * 通过name获取data数据
+     * @param hashName
+     * @param dataName
+     */
+
+  }, {
+    key: 'getData',
+    value: function getData(hashName, dataName) {
+      if (!(hashName && typeof hashName === 'string' && hashName.length > 0)) throw new TypeError('hashName must be a non-empty string');
+      if (!(dataName && typeof dataName === 'string' && dataName.length > 0)) throw new TypeError('dataName must be a non-empty string');
+      var data = this.hash[hashName];
+      return data ? data.getData(dataName) : undefined;
+    }
+
+    /**
+     * 通过index获取data数据
+     * @param hashName
+     * @param index
+     */
+
+  }, {
+    key: 'getHashByIndex',
+    value: function getHashByIndex(hashName, index) {
+      if (!(hashName && typeof hashName === 'string' && hashName.length > 0)) throw new TypeError('hashName must be a non-empty string');
+      if (!(index && typeof index === 'number' && index >= 0)) throw new TypeError('index must be a non-negative integer');
+      var data = this.hash[hashName];
+      return data ? data.getDataByIndex(index) : undefined;
+    }
+  }]);
+
+  return HashData;
+}();
+
+module.exports = HashData;
+
+/***/ }),
+
+/***/ "./lib/data/index.js":
+/*!***************************!*\
+  !*** ./lib/data/index.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var Data = __webpack_require__(/*! ./Data */ "./lib/data/Data.js");
+var HashData = __webpack_require__(/*! ./HashData */ "./lib/data/HashData.js");
+module.exports = { Data: Data, HashData: HashData };
 
 /***/ }),
 
@@ -380,10 +627,13 @@ module.exports = common;
   !*** ./lib/date/index.js ***!
   \***************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-const replaceReg = /(yyyy|yy|MM?|dd?|HH?|ss?|mm?)/g,
-      stringToDateRegs = {
+"use strict";
+
+
+var replaceReg = /(yyyy|yy|MM?|dd?|HH?|ss?|mm?)/g,
+    stringToDateRegs = {
   "yyyy": [{ num: 4, reg: /yyyy/ }, { num: 2, reg: /yy/ }],
   "MM": [{ num: 2, reg: /MM/ }, { num: 1, reg: /M/ }],
   "dd": [{ num: 2, reg: /dd/ }, { num: 1, reg: /d/ }],
@@ -391,19 +641,19 @@ const replaceReg = /(yyyy|yy|MM?|dd?|HH?|ss?|mm?)/g,
   "mm": [{ num: 2, reg: /mm/ }, { num: 1, reg: /m/ }],
   "ss": [{ num: 2, reg: /ss/ }, { num: 1, reg: /s/ }]
 },
-      hrReg = /-/g;
+    hrReg = /-/g;
 /**
  * 从日期/时间获取格式化字符串
  * @param date {Date}
  * @param format {String} 格式化format "yyyy-MM-dd HH:mm:ss"
  * @returns {String}
  */
-const toFormatString = function (date, format) {
+var toFormatString = function toFormatString(date, format) {
   if (!date) return "";
   format = format || "yyyy-MM-dd HH:mm:ss";
   date = new Date(date);
   if (!(date instanceof Date)) return "";
-  const dict = {
+  var dict = {
     "yyyy": date.getFullYear(),
     "yy": (date.getFullYear() + "").substr(2),
     "M": date.getMonth() + 1,
@@ -427,13 +677,18 @@ const toFormatString = function (date, format) {
  * @param format {String} 格式化format  默认"yyyy-MM-dd HH:mm:ss"
  * @returns {*}
  */
-const fromFormatString = function (dateStr, format) {
+var fromFormatString = function fromFormatString(dateStr, format) {
   if (format) {
     if (dateStr.length < format.length) {
       return null;
     }
-    const date = { "yyyy": 0, "MM": 0, "dd": 0, "HH": 0, "mm": 0, "ss": 0 };
-    let attr, testRegs, index, i, testLen, num;
+    var date = { "yyyy": 0, "MM": 0, "dd": 0, "HH": 0, "mm": 0, "ss": 0 };
+    var attr = void 0,
+        testRegs = void 0,
+        index = void 0,
+        i = void 0,
+        testLen = void 0,
+        num = void 0;
     for (attr in stringToDateRegs) {
       testRegs = stringToDateRegs[attr];
       for (i = 0, testLen = testRegs.length; i < testLen; ++i) {
@@ -457,7 +712,7 @@ const fromFormatString = function (dateStr, format) {
   }
   return new Date();
 };
-const util = { toFormatString, fromFormatString };
+var util = { toFormatString: toFormatString, fromFormatString: fromFormatString };
 module.exports = util;
 
 /***/ }),
@@ -469,12 +724,16 @@ module.exports = util;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const common = __webpack_require__(/*! ./common/index */ "./lib/common/index.js");
-const object = __webpack_require__(/*! ./object/index */ "./lib/object/index.js");
-const string = __webpack_require__(/*! ./string/index */ "./lib/string/index.js");
-const array = __webpack_require__(/*! ./array/index */ "./lib/array/index.js");
-const date = __webpack_require__(/*! ./date/index */ "./lib/date/index.js");
-const util = { common, object, string, array, date };
+"use strict";
+
+
+var common = __webpack_require__(/*! ./common/index */ "./lib/common/index.js");
+var object = __webpack_require__(/*! ./object/index */ "./lib/object/index.js");
+var string = __webpack_require__(/*! ./string/index */ "./lib/string/index.js");
+var array = __webpack_require__(/*! ./array/index */ "./lib/array/index.js");
+var date = __webpack_require__(/*! ./date/index */ "./lib/date/index.js");
+var data = __webpack_require__(/*! ./data/index */ "./lib/data/index.js");
+var util = { common: common, object: object, string: string, array: array, date: date, data: data };
 module.exports = util;
 
 /***/ }),
@@ -486,15 +745,21 @@ module.exports = util;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-const { deepAssign } = __webpack_require__(/*! ../common/index */ "./lib/common/index.js");
+"use strict";
+
+
+var _require = __webpack_require__(/*! ../common/index */ "./lib/common/index.js"),
+    deepAssign = _require.deepAssign;
 /**
  * 清空对象
  * @param obj
  */
-const clear = function (obj) {
+
+
+var clear = function clear(obj) {
   if (!obj || obj.constructor !== Object) throw new TypeError('obj must be a object');
   obj = Object(obj);
-  for (const key in obj) {
+  for (var key in obj) {
     if (obj.hasOwnProperty(key)) {
       delete obj[key];
     }
@@ -516,11 +781,21 @@ const clear = function (obj) {
  * mergeArray {Boolean} 合并数组 默认真
  * @return {*}
  */
-const copy = function (to, from, option = {}) {
+var copy = function copy(to, from, option) {
+  option = option || {};
   if (!to || to.constructor !== Object) throw new TypeError('to must be a object');
   if (!from || from.constructor !== Object) throw new TypeError('from must be a object');
   if (!option || option.constructor !== Object) throw new TypeError('option must be a object');
-  let { omit, deep = false, filter, mergeObject = true, mergeArray = true } = option;
+  var _option = option,
+      omit = _option.omit,
+      _option$deep = _option.deep,
+      deep = _option$deep === undefined ? false : _option$deep,
+      filter = _option.filter,
+      _option$mergeObject = _option.mergeObject,
+      mergeObject = _option$mergeObject === undefined ? true : _option$mergeObject,
+      _option$mergeArray = _option.mergeArray,
+      mergeArray = _option$mergeArray === undefined ? true : _option$mergeArray;
+
   if (omit) {
     if (typeof omit === 'string') {
       omit = [omit];
@@ -529,12 +804,12 @@ const copy = function (to, from, option = {}) {
   }
   if (filter && typeof filter !== 'function') throw new TypeError('option\'s filter must be a function');
   if (omit || filter) {
-    for (const key in from) {
+    for (var key in from) {
       if (from.hasOwnProperty(key)) {
         if (!omit || omit.indexOf(key) === -1) {
           if (filter) {
-            let name = null;
-            const back = filter.call(from, key, from, to);
+            var name = null;
+            var back = filter.call(from, key, from, to);
             if (back !== false) {
               name = back && typeof back === 'string' ? back : key;
               if (deep) {
@@ -555,15 +830,15 @@ const copy = function (to, from, option = {}) {
     }
   } else if (to !== from) {
     if (deep) {
-      for (const key in from) {
-        if (from.hasOwnProperty(key)) {
-          deepAssign(to, from, key, key, mergeObject, mergeArray);
+      for (var _key in from) {
+        if (from.hasOwnProperty(_key)) {
+          deepAssign(to, from, _key, _key, mergeObject, mergeArray);
         }
       }
     } else {
-      for (const key in from) {
-        if (from.hasOwnProperty(key)) {
-          to[key] = from[key];
+      for (var _key2 in from) {
+        if (from.hasOwnProperty(_key2)) {
+          to[_key2] = from[_key2];
         }
       }
     }
@@ -586,11 +861,21 @@ const copy = function (to, from, option = {}) {
  * mergeArray {Boolean} 合并数组 默认真
  * @return {*}
  */
-const pick = function (to, from, option = {}) {
+var pick = function pick(to, from) {
+  var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
   if (!to || to.constructor !== Object) throw new TypeError('to must be a object');
   if (!from || from.constructor !== Object) throw new TypeError('from must be a object');
   if (!option || option.constructor !== Object) throw new TypeError('option must be a object');
-  let { pick, deep = false, filter, mergeObject = true, mergeArray = true } = option;
+  var pick = option.pick,
+      _option$deep2 = option.deep,
+      deep = _option$deep2 === undefined ? false : _option$deep2,
+      filter = option.filter,
+      _option$mergeObject2 = option.mergeObject,
+      mergeObject = _option$mergeObject2 === undefined ? true : _option$mergeObject2,
+      _option$mergeArray2 = option.mergeArray,
+      mergeArray = _option$mergeArray2 === undefined ? true : _option$mergeArray2;
+
   if (to === from) {
     return to;
   }
@@ -602,32 +887,54 @@ const pick = function (to, from, option = {}) {
   }
   if (!pick) return to;
   if (filter && typeof filter !== 'function') throw new TypeError('option\'s filter must be a function');
-  for (const key of pick) {
-    if (from.hasOwnProperty(key)) {
-      if (filter) {
-        let name = null;
-        const back = filter.call(from, key, from, to);
-        if (back !== false) {
-          name = back && typeof back === 'string' ? back : key;
-          if (deep) {
-            deepAssign(to, from, key, name, mergeObject, mergeArray);
-          } else {
-            to[name] = from[key];
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = pick[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var key = _step.value;
+
+      if (from.hasOwnProperty(key)) {
+        if (filter) {
+          var name = null;
+          var back = filter.call(from, key, from, to);
+          if (back !== false) {
+            name = back && typeof back === 'string' ? back : key;
+            if (deep) {
+              deepAssign(to, from, key, name, mergeObject, mergeArray);
+            } else {
+              to[name] = from[key];
+            }
           }
-        }
-      } else {
-        if (deep) {
-          deepAssign(to, from, key, key, mergeObject, mergeArray);
         } else {
-          to[key] = from[key];
+          if (deep) {
+            deepAssign(to, from, key, key, mergeObject, mergeArray);
+          } else {
+            to[key] = from[key];
+          }
         }
       }
     }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
   }
+
   return to;
 };
-const util = {
-  clear, copy, pick
+var util = {
+  clear: clear, copy: copy, pick: pick
 };
 module.exports = util;
 
@@ -638,11 +945,14 @@ module.exports = util;
   !*** ./lib/string/index.js ***!
   \*****************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-const reg = (() => {
+"use strict";
+
+
+var reg = function () {
   // 空白符
-  const whiteChar = '[\\x20\\t\\r\\n\\f]',
+  var whiteChar = '[\\x20\\t\\r\\n\\f]',
 
   // 空白字符串
   white = whiteChar + '+',
@@ -671,7 +981,7 @@ const reg = (() => {
     // 用于替换转义字符
     escape: new RegExp('' + escapeReplace, 'g')
   };
-})();
+}();
 /**
  * 替换转义方法
  * @param matchStr 匹配的字符串
@@ -680,47 +990,50 @@ const reg = (() => {
  * @param escapeNewline 字符串本身
  * @returns {*}
  */
-const escapeReplaceFun = function (matchStr, escapeUnicode, escapeChar, escapeNewline) {
+var escapeReplaceFun = function escapeReplaceFun(matchStr, escapeUnicode, escapeChar, escapeNewline) {
   if (escapeNewline) return '';
   if (escapeChar) return escapeChar;
-  const code = parseInt(escapeUnicode, 16);
-  let sub = code - 0x10000;
+  var code = parseInt(escapeUnicode, 16);
+  var sub = code - 0x10000;
   return sub < 0 ? /* 65536*/String.fromCharCode(code) : String.fromCharCode(sub >> 10 | 0xD800, sub & 0x3FF | 0xDC00);
 };
-const util = {
+var util = {
   /**
    * 截取字符串两端空白符
    * @param str
    * @returns {*}
    */
-  trim(str) {
+  trim: function trim(str) {
     if (typeof str !== 'string') return new TypeError('str must be a string');
     return str.replace(reg.trim, '');
   },
+
   /**
    * 截取字符串左端空白符
    * @param str
    * @returns {*}
    */
-  trimLeft(str) {
+  trimLeft: function trimLeft(str) {
     if (typeof str !== 'string') return new TypeError('str must be a string');
     return str.replace(reg.trimLeft, '');
   },
+
   /**
    * 截取字符串右端空白符
    * @param str
    * @returns {*}
    */
-  trimRight(str) {
+  trimRight: function trimRight(str) {
     if (typeof str !== 'string') return new TypeError('str must be a string');
     return str.replace(reg.trimRight, '');
   },
+
   /**
    * 对字符串中的转义字符进行转义
    * @param str
    * @returns {*}
    */
-  escape(str) {
+  escape: function escape(str) {
     if (typeof str !== 'string') return new TypeError('code must be a string');
     return str.length > 0 ? str.replace(reg.escape, escapeReplaceFun) : str;
   }
