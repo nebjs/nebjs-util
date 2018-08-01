@@ -37,6 +37,13 @@ class Data {
     if (!(index && typeof index === 'number' && index >= 0)) throw new TypeError('index must be a non-negative integer');
     return this.list[index];
   }
+
+  /**
+   * 获取数据数量
+   */
+  getDataNumber() {
+    return this.list.length;
+  }
 }
 
 module.exports = Data;

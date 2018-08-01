@@ -91,14 +91,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./lib/index.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./lib/array/index.js":
+/***/ "./src/array/index.js":
 /*!****************************!*\
-  !*** ./lib/array/index.js ***!
+  !*** ./src/array/index.js ***!
   \****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -106,7 +106,7 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
-var _require = __webpack_require__(/*! ../common/index */ "./lib/common/index.js"),
+var _require = __webpack_require__(/*! ../common/index */ "./src/common/index.js"),
     clone = _require.clone,
     equal = _require.equal;
 /**
@@ -269,9 +269,9 @@ module.exports = util;
 
 /***/ }),
 
-/***/ "./lib/common/index.js":
+/***/ "./src/common/index.js":
 /*!*****************************!*\
-  !*** ./lib/common/index.js ***!
+  !*** ./src/common/index.js ***!
   \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -416,9 +416,9 @@ module.exports = common;
 
 /***/ }),
 
-/***/ "./lib/data/Data.js":
+/***/ "./src/data/Data.js":
 /*!**************************!*\
-  !*** ./lib/data/Data.js ***!
+  !*** ./src/data/Data.js ***!
   \**************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -484,6 +484,16 @@ var Data = function () {
       if (!(index && typeof index === 'number' && index >= 0)) throw new TypeError('index must be a non-negative integer');
       return this.list[index];
     }
+
+    /**
+     * 获取数据数量
+     */
+
+  }, {
+    key: 'getDataNumber',
+    value: function getDataNumber() {
+      return this.list.length;
+    }
   }]);
 
   return Data;
@@ -493,9 +503,9 @@ module.exports = Data;
 
 /***/ }),
 
-/***/ "./lib/data/HashData.js":
+/***/ "./src/data/HashData.js":
 /*!******************************!*\
-  !*** ./lib/data/HashData.js ***!
+  !*** ./src/data/HashData.js ***!
   \******************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -507,7 +517,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var LexData = __webpack_require__(/*! ./Data */ "./lib/data/Data.js");
+var LexData = __webpack_require__(/*! ./Data */ "./src/data/Data.js");
 
 /**
  * HashData类
@@ -564,7 +574,7 @@ var HashData = function () {
       if (!(dataName && typeof dataName === 'string' && dataName.length > 0)) throw new TypeError('dataName must be a non-empty string');
       var hash = this.hash;
 
-      var data = hash[hashName] || new LexData();
+      var data = hash[hashName] || (hash[hashName] = new LexData());
       return data.setData(dataName, dataValue);
     }
 
@@ -606,9 +616,9 @@ module.exports = HashData;
 
 /***/ }),
 
-/***/ "./lib/data/index.js":
+/***/ "./src/data/index.js":
 /*!***************************!*\
-  !*** ./lib/data/index.js ***!
+  !*** ./src/data/index.js ***!
   \***************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -616,15 +626,15 @@ module.exports = HashData;
 "use strict";
 
 
-var Data = __webpack_require__(/*! ./Data */ "./lib/data/Data.js");
-var HashData = __webpack_require__(/*! ./HashData */ "./lib/data/HashData.js");
+var Data = __webpack_require__(/*! ./Data */ "./src/data/Data.js");
+var HashData = __webpack_require__(/*! ./HashData */ "./src/data/HashData.js");
 module.exports = { Data: Data, HashData: HashData };
 
 /***/ }),
 
-/***/ "./lib/date/index.js":
+/***/ "./src/date/index.js":
 /*!***************************!*\
-  !*** ./lib/date/index.js ***!
+  !*** ./src/date/index.js ***!
   \***************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -717,9 +727,9 @@ module.exports = util;
 
 /***/ }),
 
-/***/ "./lib/index.js":
+/***/ "./src/index.js":
 /*!**********************!*\
-  !*** ./lib/index.js ***!
+  !*** ./src/index.js ***!
   \**********************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -727,20 +737,20 @@ module.exports = util;
 "use strict";
 
 
-var common = __webpack_require__(/*! ./common/index */ "./lib/common/index.js");
-var object = __webpack_require__(/*! ./object/index */ "./lib/object/index.js");
-var string = __webpack_require__(/*! ./string/index */ "./lib/string/index.js");
-var array = __webpack_require__(/*! ./array/index */ "./lib/array/index.js");
-var date = __webpack_require__(/*! ./date/index */ "./lib/date/index.js");
-var data = __webpack_require__(/*! ./data/index */ "./lib/data/index.js");
+var common = __webpack_require__(/*! ./common/index */ "./src/common/index.js");
+var object = __webpack_require__(/*! ./object/index */ "./src/object/index.js");
+var string = __webpack_require__(/*! ./string/index */ "./src/string/index.js");
+var array = __webpack_require__(/*! ./array/index */ "./src/array/index.js");
+var date = __webpack_require__(/*! ./date/index */ "./src/date/index.js");
+var data = __webpack_require__(/*! ./data/index */ "./src/data/index.js");
 var util = { common: common, object: object, string: string, array: array, date: date, data: data };
 module.exports = util;
 
 /***/ }),
 
-/***/ "./lib/object/index.js":
+/***/ "./src/object/index.js":
 /*!*****************************!*\
-  !*** ./lib/object/index.js ***!
+  !*** ./src/object/index.js ***!
   \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
@@ -748,7 +758,7 @@ module.exports = util;
 "use strict";
 
 
-var _require = __webpack_require__(/*! ../common/index */ "./lib/common/index.js"),
+var _require = __webpack_require__(/*! ../common/index */ "./src/common/index.js"),
     deepAssign = _require.deepAssign;
 /**
  * 清空对象
@@ -940,9 +950,9 @@ module.exports = util;
 
 /***/ }),
 
-/***/ "./lib/string/index.js":
+/***/ "./src/string/index.js":
 /*!*****************************!*\
-  !*** ./lib/string/index.js ***!
+  !*** ./src/string/index.js ***!
   \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {

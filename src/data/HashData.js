@@ -40,7 +40,7 @@ class HashData {
     if (!(hashName && typeof hashName === 'string' && hashName.length > 0)) throw new TypeError('hashName must be a non-empty string');
     if (!(dataName && typeof dataName === 'string' && dataName.length > 0)) throw new TypeError('dataName must be a non-empty string');
     const {hash} = this;
-    let data = hash[hashName] || new LexData();
+    const data = hash[hashName] || (hash[hashName] = new LexData());
     return data.setData(dataName, dataValue);
   }
 
